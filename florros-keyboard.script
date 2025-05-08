@@ -1,0 +1,53 @@
+// === Get screen dimensions ===
+screen_width = Window.GetWidth();
+screen_height = Window.GetHeight();
+
+// === FADE IN SETTINGS ===
+opacity = 0.0;
+target_opacity = 1.0;
+fade_step = 0.02;
+fade_delay = 0.02;
+
+// === TEXT CONFIGURATION ===
+label_text = "You need a keyboard to continue\nPress Enter";
+label = Label(label_text);
+label.SetFont("Inter 22");                 // Use 'Inter', fallback to system default
+label.SetColor(1.0, 1.0, 1.0);             // White text
+label.SetAlignment("center");
+label.SetPosition(screen_width / 2, screen_height / 2);
+
+// === BACKGROUND ===
+// Simulated glass-style rose gradient (Material Glass aesthetic)
+Window.SetBackgroundTopColor(0.58, 0.52, 0.56);     // Soft rose tone
+Window.SetBackgroundBottomColor(0.38, 0.34, 0.38);  // Slightly darker rose
+
+// === GLASS PANEL SIMULATION ===
+panel_width = 500;
+panel_height = 180;
+
+panel = ImageBox();
+panel.SetPosition((screen_width - panel_width) / 2, (screen_height - panel_height) / 2);
+panel.SetSize(panel_width, panel_height);
+panel.SetColor(0.3, 0.2, 0.3, 0.3);        // RGBA semi-transparent rose
+panel.SetBorder(1.0, 1.0, 1.0, 0.2);       // Light white border
+
+// === FADE IN ANIMATION ===
+Function FadeIn()
+    While (opacity < target_opacity)
+        label.SetOpacity(opacity);
+        panel.SetOpacity(opacity);
+        Sleep(fade_delay);
+        opacity = opacity + fade_step;
+    EndWhile
+    label.SetOpacity(target_opacity);
+    panel.SetOpacity(target_opacity);
+End Function
+
+FadeIn();
+
+// === KEYBOARD DETECTION ===
+Function OnKey(key)
+    if key == KEY_ENTER
+        Quit();  // Close Plymouth and continue boot
+    end if
+End Function
